@@ -7,8 +7,8 @@
             "driver": "PostgreSQL",
             "name": "next-finalproject-backend",
             "database": "next-finalproject-backend",
-            "username": "prisma",
-            "password": "prisma"
+            "username": "next",
+            "password": "next"
         }
     ]
 }
