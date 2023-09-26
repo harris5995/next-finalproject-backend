@@ -1,7 +1,7 @@
 import express from 'express'
 import { Prisma } from "@prisma/client"
 import prisma from "../utils/prisma.js"
-import { validateAccessories } from "../validators/accessories.js"
+import { validateAccs } from '../validators/accs.js'
 import { filter } from "../utils/common.js"
 import auth from "../middlewares/auth.js"
 import { verifyAccessToken } from '../utils/jwt.js'
@@ -9,24 +9,24 @@ const router = express.Router()
 
 router.post("/", auth, async (req, res) => {
   const data = req.body
-  const validationErrors = validateAccessories(data)
+  const validationErrors = validateAccs(data)
 //   const price = parseInt(req.body.price, 10);
   console.log(req)
     if (Object.keys(validationErrors).length != 0) return res.status(400).send({
         error: validationErrors
       })
 
-  prisma.accessories.create({
+  prisma.accs.create({
     data: {
       ...data,
       user_id: req.user.payload.id,
     //   price: price
     }
-  }).then(accessories => {
+  }).then(accs => {
     console.log(req.body.id)
     console.log(req.user.payload.id)
-    console.log(accessories);
-    return res.json(accessories);
+    console.log(accs);
+    return res.json(accs);
   }).catch(err => {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
       const formattedError = {}
@@ -41,19 +41,19 @@ router.post("/", auth, async (req, res) => {
 })
 
 router.get('/', async (req,res) =>{
-  const allAccessories = await prisma.accessories.findMany()
-  res.json(allAccessories)
+  const allAccs = await prisma.accs.findMany()
+  res.json(allAccs)
       })
 
 router.get('/:id', async (req,res) =>{
   const { id } = req.params
   console.log(id)
-  const Accessories = await prisma.accessories.findUnique({
+  const Accs = await prisma.accs.findUnique({
             where: {
             id: Number(id)
            }
           })
-        res.json(Accessories)
+        res.json(Accs)
       })
 
 router.delete('/:id', auth, async (req, res) => {
@@ -61,27 +61,27 @@ router.delete('/:id', auth, async (req, res) => {
   console.log(typeof id)
 
   try {
-    const accessories = await prisma.accessories.findUnique({
+    const accs = await prisma.accs.findUnique({
       where: {
         id: parseInt(id),
       }
     });
 
-    if (!accessories) {
+    if (!accs) {
       return res.status(404).send({ 'error': 'Accessories not found' });
     }
 
-      if (req.user.payload.id != accessories.user_id) {
+      if (req.user.payload.id != accs.user_id) {
     return res.status(401).send({ error: 'Unauthorized' })
   }
 
-    await prisma.accessories.delete({
+    await prisma.accs.delete({
       where: {
         id: parseInt(req.body.id)
       }
     })
-    .then((accessories) => {
-      return res.json(accessories)
+    .then((accs) => {
+      return res.json(accs)
     })
   } catch (error) {
     console.error(error);
@@ -89,4 +89,5 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
           
-export default router 
+export default router   
+

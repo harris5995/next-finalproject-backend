@@ -19,6 +19,7 @@ model User {
   bottoms  Bottoms[]
   shoes    Shoes[]
   accessories Accessories[]
+  accs Accs[]
 }
 
 model Tops {
@@ -64,6 +65,20 @@ model Shoes {
 }
 
 model Accessories {
+  id           Int     @id @default(autoincrement())
+  user         User @relation(fields: [user_id], references: [id])
+  user_id      Int
+  name         String?
+  description  String?
+  url          String @unique
+  brand        String?
+  color        String?
+  size         String?
+  occasion     String?
+  material     String?
+}
+
+model Accs {
   id           Int     @id @default(autoincrement())
   user         User @relation(fields: [user_id], references: [id])
   user_id      Int
