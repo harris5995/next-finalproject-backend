@@ -19,7 +19,8 @@ model User {
   bottoms  Bottoms[]
   shoes    Shoes[]
   accessories Accessories[]
-  accs Accs[]
+  accs        Accs[]
+  outfits     Outfits[]
 }
 
 model Tops {
@@ -34,6 +35,7 @@ model Tops {
   size         String?
   occasion     String?
   material     String?
+  outfits       Outfits[]
 }
 
 model Bottoms {
@@ -48,6 +50,7 @@ model Bottoms {
   size         String?
   occasion     String?
   material     String?
+  outfits      Outfits[]
 }
 
 model Shoes {
@@ -62,6 +65,7 @@ model Shoes {
   size         String?
   occasion     String?
   material     String?
+  outfits       Outfits[]
 }
 
 model Accessories {
@@ -90,4 +94,19 @@ model Accs {
   size         String?
   occasion     String?
   material     String?
+  outfits      Outfits[]
+}
+
+model Outfits {
+  id         Int     @id @default(autoincrement())
+  user       User @relation(fields: [user_id], references: [id])
+  tops       Tops @relation(fields: [tops_id], references: [id])
+  bottoms    Bottoms @relation(fields: [bottoms_id], references: [id])
+  shoes      Shoes @relation(fields: [shoes_id], references: [id])
+  accs       Accs @relation(fields: [accs_id], references: [id])
+  user_id    Int
+  tops_id    Int
+  bottoms_id Int
+  shoes_id   Int
+  accs_id    Int
 }

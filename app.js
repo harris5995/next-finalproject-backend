@@ -5,6 +5,7 @@ import topsRouter from "./src/controllers/tops.controllers.js"
 import bottomsRouter from "./src/controllers/bottoms.controllers.js"
 import shoesRouter from "./src/controllers/shoes.controllers.js"
 import accsRouter from "./src/controllers/accs.controllers.js"
+import outfitsRouter from "./src/controllers/outfit.controllers.js"
 
 import auth from "./src/middlewares/auth.js" 
 import cors from "cors"
@@ -22,6 +23,7 @@ app.use('/tops', topsRouter)
 app.use('/bottoms', bottomsRouter)
 app.use('/shoes', shoesRouter)
 app.use('/accs', accsRouter)
+app.use('/outfits', outfitsRouter)
 
 export default app
 
