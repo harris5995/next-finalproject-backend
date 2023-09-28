@@ -9,6 +9,24 @@ const router = express.Router()
 router.post("/", auth, async (req, res) => {
   const data = req.body
 
+  const outfit = await prisma.outfits.create({
+    data: {
+      tops: selectedTops,
+      bottoms: selectedBottoms,
+      shoes: selectedShoes,
+      accessories: selectedAccessories,
+    },
+  });
+
+})
+
+
+
+
+
+router.post("/", auth, async (req, res) => {
+  const data = req.body
+
   console.log(req)
     if (Object.keys(validationErrors).length != 0) return res.status(400).send({
         error: validationErrors
