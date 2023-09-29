@@ -109,5 +109,5 @@ model Outfits {
   bottoms_id Int
   shoes_id   Int
   accs_id    Int
-  date       DateTime
+  date       String
 }
