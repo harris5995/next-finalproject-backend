@@ -7,55 +7,26 @@ import { verifyAccessToken } from '../utils/jwt.js'
 const router = express.Router()
 
 // router.get('/:id', async (req, res) => {
-//   try {
-//     const outfitId = parseInt(req.params.outfitId);
+//       const { id } = req.params
 
-//     const outfit = await prisma.outfits.findUnique({
-//       where: { id: outfitId },
-//       select: {
-//         tops: {
-//           select: {
-//             name: true,
-//             url: true,
+//     const Outfits = await prisma.outfits.findUnique({
+//       where: { id: Number(id), },
+//         select: {
+//           accs: {
+//             select: {
+//               name: true,
+//               url: true,
+//             },
 //           },
-//         },
-//         // bottoms: {
-//         //   select: {
-//         //     name: true,
-//         //     url: true,
-//         //   },
-//         // },
-//         // accs: {
-//         //   select: {
-//         //     name:true,
-//         //     url: true,
-//         //   },
-//         // },
-//         // shoes: {
-//         //   select: {
-//         //     name: true,
-//         //     url: true,
-//         //   },
-//         // },
 //       },
 //     });
 
-//     if (!outfit) {
-//       return res.status(404).json({ error: 'Outfit not found' });
-//     }
+//     res.json(Outfits)
+//     console.log(Outfits)
+//       // accsUrl: outfits.accs.url,
+//       // accsName: outfits.accs.name,
+//     // });
 
-//     // Send the response with accs.url and shoes.url
-//     res.json({
-//       topsName: outfit.tops.name,
-//       topsUrl: outfit.tops.url,
-//       // bottomsUrl: outfit.bottoms.url,
-//       // accsUrl: outfit.accs.url,
-//       // shoesUrl: outfit.shoes.url,
-//     });
-//   } catch (error) {
-//     console.error('Error:', error);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
 // });
 
 router.get('/:id', async (req,res) =>{
