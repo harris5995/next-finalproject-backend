@@ -6,35 +6,68 @@ import auth from "../middlewares/auth.js"
 import { verifyAccessToken } from '../utils/jwt.js'
 const router = express.Router()
 
-// router.post("/", auth, async (req, res) => {
-//   const data = req.body
-//   console.log(data)
+// router.get('/:id', async (req, res) => {
+//   try {
+//     const outfitId = parseInt(req.params.outfitId);
 
-//   const outfits = await prisma.outfits.create({
-//     data: {
-//       user: { connect: { id: req.user.id} },
-//       tops: { connect: { id: data.tops_id} },
-//       bottoms: { connect: { id: data.bottoms_id } },
-//       shoes: { connect: { id: data.shoes_id } },
-//       accs: { connect: { id: data.accs_id } },
-//       date: data.date,
-      
-//     },
-  
-//   }).then(outfits => {
-//     return res.json(outfits);
-//   }).catch(err => {
-//     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
-//       const formattedError = {}
-//       formattedError[`${err.meta.target[0]}`] = 'already taken'
+//     const outfit = await prisma.outfits.findUnique({
+//       where: { id: outfitId },
+//       select: {
+//         tops: {
+//           select: {
+//             name: true,
+//             url: true,
+//           },
+//         },
+//         // bottoms: {
+//         //   select: {
+//         //     name: true,
+//         //     url: true,
+//         //   },
+//         // },
+//         // accs: {
+//         //   select: {
+//         //     name:true,
+//         //     url: true,
+//         //   },
+//         // },
+//         // shoes: {
+//         //   select: {
+//         //     name: true,
+//         //     url: true,
+//         //   },
+//         // },
+//       },
+//     });
 
-//       return res.status(500).send({
-//         error: formattedError
-//       })
+//     if (!outfit) {
+//       return res.status(404).json({ error: 'Outfit not found' });
 //     }
-//     throw err
-//   })
-// })
+
+//     // Send the response with accs.url and shoes.url
+//     res.json({
+//       topsName: outfit.tops.name,
+//       topsUrl: outfit.tops.url,
+//       // bottomsUrl: outfit.bottoms.url,
+//       // accsUrl: outfit.accs.url,
+//       // shoesUrl: outfit.shoes.url,
+//     });
+//   } catch (error) {
+//     console.error('Error:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
+
+router.get('/:id', async (req,res) =>{
+  const { id } = req.params
+  console.log(id)
+  const Outfits = await prisma.outfits.findUnique({
+            where: {
+            id: Number(id)
+           }
+          })
+        res.json(Outfits)
+      })
 
 router.post("/", auth, async (req, res) => {
   try {
@@ -71,58 +104,12 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-
-
-
-
-
-// router.post("/", auth, async (req, res) => {
-//   const data = req.body
-
-//   console.log(req)
-//     if (Object.keys(validationErrors).length != 0) return res.status(400).send({
-//         error: validationErrors
-//       })
-
-//   prisma.outfits.create({
-//     data: {
-//       ...data,
-//       user_id: req.user.payload.id,
-//     //   price: price
-//     }
-//   }).then(outfits => {
-//     console.log(req.body.id)
-//     console.log(req.user.payload.id)
-//     console.log(outfits);
-//     return res.json(outfits);
-//   }).catch(err => {
-//     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
-//       const formattedError = {}
-//       formattedError[`${err.meta.target[0]}`] = 'already taken'
-
-//       return res.status(500).send({
-//         error: formattedError
-//       })
-//     }
-//     throw err
-//   })
-// })
-
 router.get('/', async (req,res) =>{
   const allOutfits = await prisma.outfits.findMany()
   res.json(allOutfits)
       })
 
-router.get('/:id', async (req,res) =>{
-  const { id } = req.params
-  console.log(id)
-  const Outfits = await prisma.outfits.findUnique({
-            where: {
-            id: Number(id)
-           }
-          })
-        res.json(Outfits)
-      })
+
 
 router.delete('/:id', auth, async (req, res) => {
   const id  = req.params;
