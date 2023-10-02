@@ -82,36 +82,68 @@ router.get('/', async (req,res) =>{
 
 
 
+// router.delete('/:id', auth, async (req, res) => {
+//   const id  = req.params;
+//   console.log(typeof id)
+
+//   try {
+//     const outfits = await prisma.outfits.findUnique({
+//       where: {
+//         id: parseInt(id),
+//       }
+//     });
+
+//     if (!outfits) {
+//       return res.status(404).send({ 'error': 'Outfits not found' });
+//     }
+
+//       if (req.user.payload.id != outfits.user_id) {
+//     return res.status(401).send({ error: 'Unauthorized' })
+//   }
+
+//     await prisma.outfits.delete({
+//       where: {
+//         id: parseInt(req.body.id)
+//       }
+//     })
+//     .then((outfits) => {
+//       return res.json(outfits)
+//     })
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).send({ 'error': 'Internal Server Error' });
+//   }
+// });
+
 router.delete('/:id', auth, async (req, res) => {
-  const id  = req.params;
-  console.log(typeof id)
+  const id = req.params.id; // Extract the id from req.params
+  console.log(typeof id);
 
   try {
     const outfits = await prisma.outfits.findUnique({
       where: {
         id: parseInt(id),
-      }
+      },
     });
 
     if (!outfits) {
-      return res.status(404).send({ 'error': 'Outfits not found' });
+      return res.status(404).send({ error: 'Outfits not found' });
     }
 
-      if (req.user.payload.id != outfits.user_id) {
-    return res.status(401).send({ error: 'Unauthorized' })
-  }
+    if (req.user.payload.id !== outfits.user_id) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
 
     await prisma.outfits.delete({
       where: {
-        id: parseInt(req.body.id)
-      }
-    })
-    .then((outfits) => {
-      return res.json(outfits)
-    })
+        id: parseInt(id),
+      },
+    });
+
+    return res.json({ message: 'Outfit deleted successfully' });
   } catch (error) {
     console.error(error);
-    return res.status(500).send({ 'error': 'Internal Server Error' });
+    return res.status(500).send({ error: 'Internal Server Error' });
   }
 });
           
