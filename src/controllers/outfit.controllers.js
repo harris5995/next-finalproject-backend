@@ -146,6 +146,31 @@ router.delete('/:id', auth, async (req, res) => {
     return res.status(500).send({ error: 'Internal Server Error' });
   }
 });
+
+router.get('/random-outfit', async (req, res) => {
+  try {
+    const outfit = await generateRandomOutfit();
+    res.json(outfit);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+async function generateRandomOutfit() {
+  const randomTop = await prisma.top.findFirst({ orderBy: { random: true }, take: 1 });
+  const randomBottom = await prisma.bottoms.findFirst({ orderBy: { random: true }, take: 1 });
+  const randomShoe = await prisma.shoes.findFirst({ orderBy: { random: true }, take: 1 });
+
+  // You can add more logic for other categories like accessories, etc.
+
+  return {
+    top: randomTop.name,
+    bottom: randomBottom.name,
+    shoe: randomShoe.name,
+    // Add more categories if needed
+  };
+}
           
 export default router
 
